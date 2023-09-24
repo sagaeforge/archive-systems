@@ -1,0 +1,6 @@
+#ifndef NDK_ALGORITHM_LIBRARY_H
+#define NDK_ALGORITHM_LIBRARY_H
+
+void hello();
+
+#endif //NDK_ALGORITHM_LIBRARY_H

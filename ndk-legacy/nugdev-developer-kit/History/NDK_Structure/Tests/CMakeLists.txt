@@ -1,0 +1,38 @@
+cmake_minimum_required(VERSION 3.25)
+project(
+        nugdev.test.NDK_Structure
+        VERSION 0.0.1
+        DESCRIPTION "nugdev lib) Structure Library test"
+        HOMEPAGE_URL ""
+        LANGUAGES CXX
+)
+
+# GoogleTest requires at least C++14
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+include(FetchContent)
+FetchContent_Declare(
+        googletest
+        URL https://github.com/google/googletest/archive/03597a01ee50ed33e9dfd640b249b4be3799d395.zip
+)
+set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+FetchContent_MakeAvailable(googletest)
+
+add_library( ${PROJECT_NAME}
+    ./Test.cpp
+        ../Sources/core.cpp
+        ../Sources/core.h
+)
+target_link_libraries(
+        ${PROJECT_NAME}
+        PRIVATE gtest_main
+        PRIVATE nugdev.lib.NDK_Structure
+)
+target_include_directories(
+        ${PROJECT_NAME}
+        PRIVATE ../Sources/
+)
+
+include(GoogleTest)
+gtest_discover_tests(${PROJECT_NAME})
