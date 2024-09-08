@@ -1,0 +1,40 @@
+FROM python:3.12-bookworm
+
+EXPOSE 8080
+ENV LANG=ko_KR.UTF-8 \
+    LANGUAGE=ko_KR:ko \
+    LC_ALL=ko_KR.UTF-8 \
+    DEBIAN_FRONTEND=noninteractive \
+    HOME=/wine \
+    WINEPREFIX=/wine \
+    WINEARCH=win64 \
+    WINEDEBUG=-all,+err,+fixme \
+    DISPLAY=:0
+
+RUN dpkg --add-architecture i386 && \
+    apt-get update && \
+    apt-get install -y \
+        wget locales fonts-nanum fonts-unfonts-core sed supervisor \
+        xvfb x11vnc xdotool tar net-tools fluxbox gnupg2 && \
+    sed -i '/ko_KR.UTF-8/s/^# //g' /etc/locale.gen && \
+    locale-gen \
+    localedef -i ko_KR -c -f UTF-8 -A /usr/share/locale/locale.alias ko_KR.UTF-8 \
+    update-locale LANG=ko_KR.UTF-8 LC_ALL=ko_KR.UTF-8
+
+RUN mkdir -pm755 /etc/apt/keyrings && \
+    wget -O /etc/apt/keyrings/winehq-archive.key https://dl.winehq.org/wine-builds/winehq.key && \
+    wget -NP /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/debian/dists/bookworm/winehq-bookworm.sources && \
+    apt update && \
+    apt install --install-recommends -y winehq-devel
+
+RUN wget -O - https://github.com/novnc/noVNC/archive/v1.5.0.tar.gz | tar -xzv -C /root/ && \
+    mv /root/noVNC-1.5.0 /root/novnc && \
+    ln -s /root/novnc/vnc_lite.html /root/novnc/index.html && \
+    pip install -U websockify
+
+ADD supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+ADD install /install
+ADD startup.sh /startup.sh
+ADD mod /mod
+
+CMD [ "/usr/bin/supervisord" ]
