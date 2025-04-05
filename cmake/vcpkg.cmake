@@ -13,4 +13,5 @@ endif()
 
 find_package(ICU REQUIRED COMPONENTS uc i18n data io)
 find_package(RapidJSON CONFIG REQUIRED)
-find_package(stduuid CONFIG REQUIRED)
+find_package(magic_enum CONFIG REQUIRED)
+find_package(boost_uuid CONFIG REQUIRED)

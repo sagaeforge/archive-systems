@@ -11,12 +11,15 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # add cmake module path
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
-
-# vcpkg
 include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/vcpkg.cmake)
 
 add_library(${PROJECT_NAME} SHARED
-    ${CMAKE_CURRENT_SOURCE_DIR}/module.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/module/module.cpp
+
+    ${CMAKE_CURRENT_SOURCE_DIR}/module/json/Json.hpp
+
+    ${CMAKE_CURRENT_SOURCE_DIR}/module/string/String.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/module/string/String.hpp
 )
 target_link_libraries(${PROJECT_NAME}
 PUBLIC
@@ -24,5 +27,10 @@ PUBLIC
     ICU::i18n
     ICU::data
     rapidjson
-    stduuid
+    magic_enum::magic_enum
+    Boost::uuid
+)
+target_include_directories(${PROJECT_NAME}
+PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}/module
 )
