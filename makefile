@@ -1,6 +1,8 @@
-BOOTLOADER_DIR = 00_BootLoader
 
-all: BootLoader Disk.img
+BOOTLOADER_DIR = 00_BootLoader
+KERNEL32_DIR = 01_Kernel32
+
+all: BootLoader Kernel32 Disk.img
 
 BootLoader:
 	@echo
@@ -13,12 +15,23 @@ BootLoader:
 	@echo ================ Build Complete ================
 	@echo
 
+Kernel32:
+	@echo
+	@echo ================ Build 32bit kernel ================
+	@echo
+
+	make -C $(KERNEL32_DIR)
+
+	@echo
+	@echo ================ Build Complete ================
+	@echo
+
 Disk.img: $(BOOTLOADER_DIR)/BootLoader.bin
 	@echo
 	@echo ================ Disk Image Build Start ================
 	@echo
 
-	cp $(BOOTLOADER_DIR)/BootLoader.bin Disk.img
+	cat $(BOOTLOADER_DIR)/BootLoader.bin $(KERNEL32_DIR)/VirtualOS.bin > Disk.img
 
 	@echo
 	@echo ================ All Build Complete ================
@@ -26,4 +39,5 @@ Disk.img: $(BOOTLOADER_DIR)/BootLoader.bin
 
 clean:
 	make -C $(BOOTLOADER_DIR) clean
+	make -C $(KERNEL32_DIR) clean
 	rm -f Disk.img
