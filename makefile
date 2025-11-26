@@ -26,12 +26,12 @@ Kernel32:
 	@echo ================ Build Complete ================
 	@echo
 
-Disk.img: $(BOOTLOADER_DIR)/BootLoader.bin
+Disk.img: $(BOOTLOADER_DIR)/BootLoader.bin $(KERNEL32_DIR)/Kernel32.bin
 	@echo
 	@echo ================ Disk Image Build Start ================
 	@echo
 
-	cat $(BOOTLOADER_DIR)/BootLoader.bin $(KERNEL32_DIR)/VirtualOS.bin > Disk.img
+	cat $^ > Disk.img
 
 	@echo
 	@echo ================ All Build Complete ================
