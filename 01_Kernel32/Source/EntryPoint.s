@@ -46,7 +46,7 @@ PROTECTED_MODE:
     call PRINT_MESSAGE
     add esp, 12
 
-    jmp $
+    jmp dword 0x08: 0x10200 ; C 언어 커널이 존재하는 0x10200 어드레스로 이동하여 C언어 커널 수행.
 
 ;
 ;   함수 코드 영역
