@@ -1,0 +1,3 @@
+/Users/nugdev/mint64/build-caches/CMakeFiles/Analysis.dir
+/Users/nugdev/mint64/build-caches/CMakeFiles/edit_cache.dir
+/Users/nugdev/mint64/build-caches/CMakeFiles/rebuild_cache.dir

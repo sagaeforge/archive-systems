@@ -4,23 +4,89 @@
 
 #include "Types.h"
 
-void kPrintString(int iX, int iY, const char* pcString);
+void kPrintString(int iX, int iY, const char *pcString);
+BOOL kInitializeKernel64Area(void);
+BOOL kIsMemoryEnough(void);
 
-void Main(void)
-{
-    kPrintString(0, 3, "C Language Kernel Started~!!!");
+void Main(void) {
+	DWORD i;
 
-    while (1);
+	kPrintString(0, 3, "C Language Kernel Start...............................[Pass]");
+
+	// 최소 메모리 크기를 만족하는 지 검사.
+	kPrintString(0, 4, "Minimum Memory Size Check.............................[    ]");
+	if (kIsMemoryEnough() == FALSE) {
+		kPrintString(55, 4, "FAIL");
+		kPrintString(0, 5, "Not Enough Memory~!! MINT64 OS Requires Over 64MB Memory");
+
+		while (1);
+	} else {
+		kPrintString(55, 4, "Pass");
+	}
+
+	// IA-32e 모드의 커널 영역을 초기화
+	kPrintString(0, 5, "IA-32e Kernel Area Initialize.........................[    ]");
+	if (kInitializeKernel64Area() == FALSE) {
+		kPrintString(55, 5, "FAIL");
+		kPrintString(0, 6, "Kernel Area Initialization failed");
+
+		while (1);
+	}
+
+	kPrintString(55, 5, "Pass");
+
+	while (1);
 }
 
-void kPrintString(int iX, int iY, const char* pcString)
-{
-    CHARACTOR *pstScreen = ( CHARACTOR* ) 0xB8000;
-    int i;
+void kPrintString(int iX, int iY, const char *pcString) {
+	CHARACTOR *pstScreen = (CHARACTOR *) 0xB8000;
+	int i;
 
-    pstScreen += (iY * 80) + iX;
-    for (i = 0; pcString[i] != 0; i++)
-    {
-        pstScreen[i].bCharacter = pcString[i];
-    }
+	pstScreen += (iY * 80) + iX;
+	for (i = 0; pcString[i] != 0; i++) {
+		pstScreen[i].bCharacter = pcString[i];
+	}
+}
+
+BOOL kInitializeKernel64Area(void) {
+	DWORD *pdwCurrentAddress;
+
+	// 초기화를 시작할 어드레스인 0x100000(1MB)을 설정
+	pdwCurrentAddress = (DWORD *) 0x100000;
+
+	// 마지막 어드레스인 0x600000(6MB)까지 루프를 돌면서 4바이트씩 0으로 채움.
+	while ((DWORD) pdwCurrentAddress < (DWORD) 0x60000) {
+		*pdwCurrentAddress = 0x00;
+
+		// 0으로 저장한 후, 다시 읽었을 때, 0이 나오지 않는 다면 해당 어드레스를 사용하는 데 문제가 생긴것으므로 더 이상 진행하지 않고 종료
+		if (*pdwCurrentAddress != 0x00) {
+			return FALSE;
+		}
+
+		// 다음 어드레스로 이동.
+		pdwCurrentAddress++;
+	}
+
+	return TRUE;
+}
+
+BOOL kIsMemoryEnough(void) {
+	DWORD *pdwCurrentAddress;
+
+	// 0x100000(1MB)부터 검사 시작
+	pdwCurrentAddress = (DWORD *) 0x100000;
+
+	// 0x4000000(64MB)까지 루프를 돌면서 확인
+	while ((DWORD) pdwCurrentAddress < (DWORD) 0x4000000) {
+		*pdwCurrentAddress = 0x12345678;
+
+		// 0x12345678로 저장한 후, 다시 읽었을 때, 0x12345678이 나오지 않으면, 해당 어드레스를 사용하는 데 문제가 생긴 것이므로 더 이상 진행하지 않고 종료.
+		if (*pdwCurrentAddress != 0x12345678) {
+			return FALSE;
+		}
+
+		pdwCurrentAddress += (0x100000 / 4);
+	}
+
+	return TRUE;
 }
