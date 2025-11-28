@@ -9,6 +9,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/Users/nugdev/mint64/01_Kernel32/Source/Main.c" "CMakeFiles/Analysis.dir/01_Kernel32/Source/Main.c.o" "gcc" "CMakeFiles/Analysis.dir/01_Kernel32/Source/Main.c.o.d"
+  "/Users/nugdev/mint64/01_Kernel32/Source/Page.c" "CMakeFiles/Analysis.dir/01_Kernel32/Source/Page.c.o" "gcc" "CMakeFiles/Analysis.dir/01_Kernel32/Source/Page.c.o.d"
   )
 
 # Targets to which this target links which contain Fortran sources.

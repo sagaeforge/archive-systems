@@ -3,6 +3,8 @@ file(REMOVE_RECURSE
   "Analysis.pdb"
   "CMakeFiles/Analysis.dir/01_Kernel32/Source/Main.c.o"
   "CMakeFiles/Analysis.dir/01_Kernel32/Source/Main.c.o.d"
+  "CMakeFiles/Analysis.dir/01_Kernel32/Source/Page.c.o"
+  "CMakeFiles/Analysis.dir/01_Kernel32/Source/Page.c.o.d"
 )
 
 # Per-language clean rules from dependency scanning.

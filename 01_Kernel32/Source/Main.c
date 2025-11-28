@@ -3,6 +3,7 @@
 //
 
 #include "Types.h"
+#include "Page.h"
 
 void kPrintString(int iX, int iY, const char *pcString);
 BOOL kInitializeKernel64Area(void);
@@ -35,6 +36,11 @@ void Main(void) {
 
 	kPrintString(55, 5, "Pass");
 
+	// IA-32e 모드 커널을 위한 페이지 테이블 생성
+	kPrintString(0, 6, "IA-32e Page Tables Initialize.........................[    ]");
+	kInitializePageTables();
+	kPrintString(55, 6, "Pass");
+
 	while (1);
 }
 
@@ -49,10 +55,8 @@ void kPrintString(int iX, int iY, const char *pcString) {
 }
 
 BOOL kInitializeKernel64Area(void) {
-	DWORD *pdwCurrentAddress;
-
 	// 초기화를 시작할 어드레스인 0x100000(1MB)을 설정
-	pdwCurrentAddress = (DWORD *) 0x100000;
+	DWORD *pdwCurrentAddress = (DWORD *) 0x100000;
 
 	// 마지막 어드레스인 0x600000(6MB)까지 루프를 돌면서 4바이트씩 0으로 채움.
 	while ((DWORD) pdwCurrentAddress < (DWORD) 0x60000) {
@@ -71,10 +75,8 @@ BOOL kInitializeKernel64Area(void) {
 }
 
 BOOL kIsMemoryEnough(void) {
-	DWORD *pdwCurrentAddress;
-
 	// 0x100000(1MB)부터 검사 시작
-	pdwCurrentAddress = (DWORD *) 0x100000;
+	DWORD *pdwCurrentAddress = (DWORD *) 0x100000;
 
 	// 0x4000000(64MB)까지 루프를 돌면서 확인
 	while ((DWORD) pdwCurrentAddress < (DWORD) 0x4000000) {

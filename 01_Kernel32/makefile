@@ -58,10 +58,6 @@ clean:
 ################################################################################
 # Make에 의해 다시 호출되는 부분, Temp 디렉터리를 기준으로 수행됨
 ################################################################################
-# Make의 내장 규칙 비활성화
-.SUFFIXES:
-MAKEFLAGS += --no-builtin-rules
-
 # 빌드할 C 소스 파일 정의, Temp 디렉터리를 기준으로 설정
 CENTRYPOINTOBJECTFILE = Main.o
 CSOURCEFILES = $(wildcard ../$(SOURCEDIRECTORY)/*.c)
@@ -69,22 +65,23 @@ ASSEMBLYSOURCEFILES = $(wildcard ../$(SOURCEDIRECTORY)/*.asm)
 COBJECTFILES = $(subst Main.o, , $(notdir $(patsubst %.c,%.o,$(CSOURCEFILES))))
 ASSEMBLYOBJECTFILES = $(notdir $(patsubst %.asm,%.o,$(ASSEMBLYSOURCEFILES)))
 
-# Main.o에 대한 명시적 규칙 (가장 먼저!)
-Main.o: ../$(SOURCEDIRECTORY)/Main.c ../$(SOURCEDIRECTORY)/Types.h
-	$(GCC32) -c -o Main.o ../$(SOURCEDIRECTORY)/Main.c
-
 # .c 파일을 .o 파일로 바꾸는 규칙 정의
 %.o: ../$(SOURCEDIRECTORY)/%.c
-	$(GCC32) -c -o $@ $
+	$(GCC32) -c $<
 
 # .asm 파일을 .o 파일로 바꾸는 규칙 정의
 %.o: ../$(SOURCEDIRECTORY)/%.asm
-	$(NASM32) -f elf32 -o $@ $
+	$(NASM32) -f elf32 -o $@ $<
 
-# 실제 의존성에 관련된 파일을 생성 (더미로 유지)
+# 실제 의존성에 관련된 파일을 생성
 InternalDependency:
-	@echo "Dependency check skipped"
+	$(GCC32) -MM $(CSOURCEFILES) > Dependency.dep
 
 # 실제 커널 이미지를 빌드
 Kernel32.elf: $(CENTRYPOINTOBJECTFILE) $(COBJECTFILES) $(ASSEMBLYOBJECTFILES)
 	$(LD32) -o $@ $^
+
+# 현재 디릭토리의 파일 중, dependency 파일이 있으면 make에 포함
+ifeq (Dependency.dep, $(wildcard Dependency.dep))
+include Dependency.dep
+endif

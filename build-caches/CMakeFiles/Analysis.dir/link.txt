@@ -1,1 +1,1 @@
-/usr/bin/cc  -arch arm64 -Wl,-search_paths_first -Wl,-headerpad_max_install_names CMakeFiles/Analysis.dir/01_Kernel32/Source/Main.c.o -o Analysis
+/usr/bin/cc  -arch arm64 -Wl,-search_paths_first -Wl,-headerpad_max_install_names CMakeFiles/Analysis.dir/01_Kernel32/Source/Main.c.o CMakeFiles/Analysis.dir/01_Kernel32/Source/Page.c.o -o Analysis
