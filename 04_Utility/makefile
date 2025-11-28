@@ -7,7 +7,7 @@ ImageMaker:
 	@echo ============= Build ImageMaker ===============
 	@echo
 
-	make -C 00.ImageMaker
+	make -C 00_ImageMaker
 
 	@echo
 	@echo =============== Build Complete ===============
