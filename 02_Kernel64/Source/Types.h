@@ -16,10 +16,9 @@
 
 #pragma pack(push,1)
 
-typedef struct kCharactorStruct
-{
+typedef struct kCharactorStruct {
     BYTE bCharacter;
     BYTE bAttribute;
-} CHARACTOR;
+} CHARACTER;
 
 #pragma pack(pop)
