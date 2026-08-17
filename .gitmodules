@@ -1,0 +1,3 @@
+[submodule "ndk/vcpkg"]
+	path = ndk/vcpkg
+	url = https://github.com/microsoft/vcpkg.git
