@@ -6,7 +6,7 @@
 
 | 디렉터리 | 내용 | 커밋 | 기간 |
 |---|---|---:|---|
-| [`mint64/`](mint64) | 64비트 OS 커널 자작 — 부트로더 / 32비트·64비트 커널 (ASM + C) | 8 | 2025.11 |
+| [`mint64/`](mint64) | 64비트 OS 커널 — 부트로더 / 32비트·64비트 커널 (ASM + C). 『64비트 멀티코어 OS 원리와 구조』를 따라 만듦 | 8 | 2025.11 |
 | [`ndk/`](ndk) | Nugdev Developer Kit — C++ 공용 모듈 (CMake + vcpkg) | 4 | 2025.04–2026.08 |
 | [`ndk-legacy/nugdev-developer-kit/`](ndk-legacy/nugdev-developer-kit) | NDK 초기 설계 — Memory / Structure / Algorithm / String | 1 | 2023.09 |
 | [`ndk-legacy/nugunga-develop-kit/`](ndk-legacy/nugunga-develop-kit) | C++ 리플렉션 실험 — Property / Reflection | 1 | 2023.10 |
@@ -14,6 +14,8 @@
 
 ## 참고
 
+- `mint64/` 는 『64비트 멀티코어 OS 원리와 구조』(한승훈)의 MINT64OS 를 따라 만든 것입니다.
+  커밋 메시지가 장 단위(`7장 C언어 커널 추가`, `8장 A20 게이트…`)로 남아 있습니다.
 - `ndk/` 는 vcpkg 를 서브모듈로 씁니다 — `git submodule update --init --recursive`
 - `wine-python/docker/install/` 의 wine-mono / wine-gecko 설치본(184MB)은 제외했습니다.
   같은 디렉터리의 `README.md` 에 받는 곳을 적어뒀습니다.
